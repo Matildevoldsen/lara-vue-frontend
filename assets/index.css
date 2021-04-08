@@ -1,0 +1,12 @@
+@font-face {
+  font-style: normal;
+  font-display: swap; /* Read next point */
+  unicode-range: U+000-5FF; /* Download only latin glyphs */
+  font-family: "Kanit";
+  src: local("Kanit"),
+  url(~assets/logo-font/Kanit-Regular.ttf) format("ttf");
+}
+
+body {
+  background-color: rgb(243 244 246);
+}

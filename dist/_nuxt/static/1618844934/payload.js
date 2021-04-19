@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/", {data:[{}],fetch:{"0":{showMenuBar:false,menu:{title:"Settings"}}},mutations:[]});

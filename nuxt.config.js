@@ -51,6 +51,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
   ],
+  sitemap: false,
   proxy: {
     '/laravel': {
       target: process.env.BASE_URL || "http://localhost:8000",

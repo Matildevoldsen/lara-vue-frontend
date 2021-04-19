@@ -6,7 +6,7 @@
         Login To Your Account
       </div>
       <div class="mt-8">
-        <form action="#" v-on:submit.prevent="login" autoComplete="off">
+        <form action="#" v-on:submit.prevent="register" autoComplete="off">
           <div v-if="message" class="bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4 mb-5" role="alert">
             <p class="font-bold">
               Whoops, looks like something went wrong!
@@ -16,22 +16,30 @@
             </p>
           </div>
 
-          <Input v-model="form.email" type="email" placeholder="sofia@example.com" iconLeft="/sprite/emailIcon.svg" width="30" :error="errors.email && errors.email[0] ? errors.email[0] : ''"/>
-          <Input v-model="form.password" type="password" placeholder="Please provide your password" iconLeft="/sprite/passwordIcon.svg" width="30" :error="errors.password&& errors.password[0] ? errors.password[0] : ''"/>
+          <Input v-model="form.name" type="text" placeholder="Sofia Smith" iconLeft="/sprite/user.svg"
+                 :error="errors.name && errors.name[0] ? errors.name[0] : ''"/>
+          <Input v-model="form.email" type="email" placeholder="sofia@example.com" iconLeft="/sprite/emailIcon.svg"
+                 :error="errors.email && errors.email[0] ? errors.email[0] : ''"/>
+          <Input v-model="form.password" type="password" placeholder="Please provide your password"
+                 iconLeft="/sprite/passwordIcon.svg"
+                 :error="errors.password && errors.password[0] ? errors.password[0] : ''"/>
+          <Input v-model="form.password_confirmation" type="password" placeholder="Please confirm your password"
+                 iconLeft="/sprite/passwordIcon.svg"
+                 :error="errors.password_confirmation && errors.password_confirmation[0] ? errors.password_confirmation[0] : ''"/>
 
 
           <div class="flex items-center mb-6 -mt-4">
             <div class="flex ml-auto">
-              <nuxt-link to="/auth/forgot-password"
+              <a href="#"
                  class="inline-flex text-xs font-thin text-gray-500 sm:text-sm dark:text-gray-100 hover:text-gray-700 dark:hover:text-white">
                 Forgot Your Password?
-              </nuxt-link>
+              </a>
             </div>
           </div>
           <div class="flex w-full">
-            <button type="submit" v-on:submit.prevent="login"
+            <button type="submit" v-on:submit.prevent="register"
                     class="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-              Login
+              Register
             </button>
           </div>
         </form>
@@ -39,9 +47,9 @@
       <div class="flex items-center justify-center mt-6">
         <a href="#" target="_blank"
            class="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
-                    <span class="ml-2">
-                        You don&#x27;t have an account?
-                    </span>
+          <span class="ml-2">
+            You don&#x27;t have an account?
+          </span>
         </a>
       </div>
     </div>
@@ -54,28 +62,35 @@ export default Vue.extend({
   data() {
     return {
       form: {
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        password_confirmation: "",
       },
       errors: [],
       message: ""
     }
   },
   methods: {
-    async login() {
-      try {
-        await this.$auth.loginWith('laravelSanctum', {data: this.form}).then(resp => {
-          this.$router.push('/');
-        }).catch(err => {
-          if (err && err.response.status == 422) {
-            this.errors = [];
-            this.message = "Please correct the details below.";
-            this.errors = err.response.data.errors;
-          }
-        });
-      } catch (e) {
+    async register() {
+      await this.$axios.get('sanctum/csrf-cookie');
 
-      }
+      let registered = false;
+      await this.$axios.post('register', this.form).then(resp => {
+        if (resp) registered = true;
+      });
+
+      if (registered) await this.login();
+    },
+    async login() {
+      let form = {
+        email: this.form.email,
+        password: this.form.password
+      };
+
+      await this.$auth.loginWith('laravelSanctum', {
+        data: this.form
+      })
     }
   }
 });

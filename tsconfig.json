@@ -26,9 +26,12 @@
     "types": [
       "@nuxt/types",
       "@nuxtjs/axios",
-      "@types/node"
-    ]
+      "@types/node",
+      "@nuxtjs/auth-next"
+    ],
   },
+  "typings": "types/index.d.ts",
+  "files": ["types/*.d.ts"],
   "exclude": [
     "node_modules",
     ".nuxt",

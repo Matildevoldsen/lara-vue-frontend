@@ -1,11 +1,12 @@
 <template>
   <div>
     <div>
-      <nav class="bg-white dark:bg-gray-800  shadow py-4 ">
+      <nav class="z-20 bg-white dark:bg-gray-800  shadow py-4 ">
         <div class="max-w-7xl mx-auto px-8">
           <div class="flex items-center justify-between h-16">
             <div class=" flex items-center">
-              <a class="flex-shrink-0 font-bold font-italic text-lg text-uppercase" style="font-family: 'Kanit', sans-serif;" href="/">
+              <a class="flex-shrink-0 font-bold font-italic text-lg text-uppercase"
+                 style="font-family: 'Kanit', sans-serif;" href="/">
                 <span class="text-red-500">Lara-</span><span class="text-green-500">vue</span>
               </a>
               <div class="hidden md:block">
@@ -46,11 +47,15 @@
                            class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                            placeholder="Search..."/>
                   </div>
-                  <button
-                    class="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
-                    type="submit">
-                    Search
-                  </button>
+                  <Menu class="mt-1" v-if="$auth.loggedIn" :menu="menu">
+                    <MenuItem title="My Profile"/>
+                    <nuxt-link to="user/ProfileSettings">
+                      <MenuItem title="Profile Settings"/>
+                    </nuxt-link>
+                    <a v-on:click="logout">
+                      <MenuItem title="Logout"/>
+                    </a>
+                  </Menu>
                 </form>
               </div>
               <div class="ml-4 flex items-center md:ml-6">
@@ -70,14 +75,17 @@
             </div>
           </div>
         </div>
-        <div v-if="showMenuBar" class="md:hidden flex justify-center" style="flex-direction: column;align-content: center;align-items: center;">
+        <div v-if="showMenuBar" class="md:hidden flex justify-center"
+             style="flex-direction: column;align-content: center;align-items: center;">
           <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a
               class="text-gray-800 dark:text-white block px-3 py-2 rounded-md text-base font-medium"
               href="/#">
               Home
             </a>
-            <a class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="/#">
+            <a
+              class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              href="/#">
               Laravel
             </a>
             <a
@@ -125,9 +133,23 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      showMenuBar: false
+      showMenuBar: false,
+      menu: {
+        title: "Settings"
+      }
+    }
+  },
+  async fetch() {
+    if (this.$auth.loggedIn) {
+      this.menu.title = this.$auth.user.name;
+    }
+  },
+  methods: {
+    async logout() {
+      await console.log("logging out")
+      await this.$auth.logout();
+      await this.$router.push('/');
     }
   }
 })
 </script>
-

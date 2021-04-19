@@ -9,20 +9,15 @@
     "generate": "nuxt generate",
     "test": "jest"
   },
-  "config": {
-    "nuxt": {
-      "host": "192.168.10.10",
-      "port": "3000"
-    }
-  },
   "dependencies": {
     "@nuxtjs/auth-next": "5.0.0-1616003482.75c20e6",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/sitemap": "^2.4.0",
     "@nuxtjs/svg-sprite": "^0.5.2",
-    "chokidar": "^3.3.1",
+    "chokidar": "^3.5.1",
     "core-js": "^3.9.1",
+    "dotenv": "^8.2.0",
     "nuxt": "^2.15.3"
   },
   "devDependencies": {

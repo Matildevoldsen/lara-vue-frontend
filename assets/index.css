@@ -1,3 +1,6 @@
+/*
+  Load font type Kanit.
+ */
 @font-face {
   font-style: normal;
   font-display: swap; /* Read next point */
@@ -7,6 +10,9 @@
   url(~assets/logo-font/Kanit-Regular.ttf) format("ttf");
 }
 
+/*
+  Change background colour of website.
+ */
 body {
   background-color: rgb(243 244 246);
 }

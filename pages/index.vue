@@ -1,5 +1,8 @@
 <template>
   <div class="container mx-auto">
+    <template v-if="$auth.loggedIn">
+      {{ $auth.user.name }}
+    </template>
     <ArticleList class="mt-10">
       <ArticleCard :article="article" :user="user"/>
       <ArticleCard :article="article" :user="user"/>
